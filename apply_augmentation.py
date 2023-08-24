@@ -63,7 +63,7 @@ if __name__ == "__main__":
         base_name, _ = os.path.splitext(filename)
         label_path = os.path.join(labels_directory, base_name + ".txt")
         
-        if os.path.isfile(label_path):
+        try:
             polygons, to_crop, to_rotate = extract_polygons(image_path, label_path)
             
             num_crop = 1
@@ -71,20 +71,22 @@ if __name__ == "__main__":
             num_color = 1
             
             
-            cropped_polygons = crop(image_path, to_crop, cropped_images_directory, num_crop)
-            for i in range (0,num_crop):
+            cropped_polygons,numberOfSuccesfullCrops = crop(image_path, to_crop, cropped_images_directory, num_crop)
+            for i in range (0,numberOfSuccesfullCrops):
                 cropped_label_path = os.path.join(cropped_labels_directory, base_name +  "_cropped" + str(i) + ".txt")
                 save_label(cropped_polygons[i], cropped_label_path)
             
-            rotated_polygons = rotate(image_path, to_rotate, rotated_images_directory, num_rotate)
-            for i in range (0,num_rotate):
+            rotated_polygons,numberOfSuccesfullRotations = rotate(image_path, to_rotate, rotated_images_directory, num_rotate)
+            for i in range (0,numberOfSuccesfullRotations):
                 rotated_label_path = os.path.join(rotated_labels_directory, base_name +  "_rotated" + str(i) + ".txt")
                 save_label(rotated_polygons[i], rotated_label_path)
 
-            color(image_path, colored_images_directory, num_color)
+            numberOfSuccesfullColors=color(image_path, colored_images_directory, num_color)
             
             
            
             
-        else:
+        except FileNotFoundError:
             print(f"Label file missing for image: {image_path}")
+        except Exception as e:
+            print(f"An error occurred for image {image_path}: {e}")
