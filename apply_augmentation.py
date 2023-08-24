@@ -36,3 +36,55 @@ def save_label(updated_polygons, output_label_path):
             polygon_line = f"{class_value} " + " ".join([f"{coord:.6f}" for vertex in polygon for coord in vertex])
             label_file.write(polygon_line + "\n")
 
+
+
+
+images_directory = "images"
+labels_directory = "labels"
+cropped_images_directory = "cropped_images"
+cropped_labels_directory = "cropped_labels"
+rotated_images_directory = "rotated_images"
+rotated_labels_directory = "rotated_labels"
+colored_images_directory = "colored_images"
+
+
+if __name__ == "__main__":
+    # Create output directories if they don't exist
+    os.makedirs(cropped_images_directory, exist_ok=True)
+    os.makedirs(cropped_labels_directory, exist_ok=True)
+    os.makedirs(rotated_images_directory, exist_ok=True)
+    os.makedirs(rotated_labels_directory, exist_ok=True)
+    os.makedirs(colored_images_directory, exist_ok=True)
+    
+    
+    for filename in os.listdir(images_directory):
+        
+        image_path = os.path.join(images_directory, filename)
+        base_name, _ = os.path.splitext(filename)
+        label_path = os.path.join(labels_directory, base_name + ".txt")
+        
+        if os.path.isfile(label_path):
+            polygons, to_crop, to_rotate = extract_polygons(image_path, label_path)
+            
+            num_crop = 1
+            num_rotate = 1
+            num_color = 1
+            
+            
+            cropped_polygons = crop(image_path, to_crop, cropped_images_directory, num_crop)
+            for i in range (0,num_crop):
+                cropped_label_path = os.path.join(cropped_labels_directory, base_name +  "_cropped" + str(i) + ".txt")
+                save_label(cropped_polygons[i], cropped_label_path)
+            
+            rotated_polygons = rotate(image_path, to_rotate, rotated_images_directory, num_rotate)
+            for i in range (0,num_rotate):
+                rotated_label_path = os.path.join(rotated_labels_directory, base_name +  "_rotated" + str(i) + ".txt")
+                save_label(rotated_polygons[i], rotated_label_path)
+
+            color(image_path, colored_images_directory, num_color)
+            
+            
+           
+            
+        else:
+            print(f"Label file missing for image: {image_path}")
