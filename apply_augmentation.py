@@ -39,16 +39,24 @@ def save_label(updated_polygons, output_label_path):
 
 
 
-images_directory = "images"
-labels_directory = "labels"
-cropped_images_directory = "cropped_images"
-cropped_labels_directory = "cropped_labels"
-rotated_images_directory = "rotated_images"
-rotated_labels_directory = "rotated_labels"
-colored_images_directory = "colored_images"
 
 
-if __name__ == "__main__":
+
+def apply_augmentation( 
+        rotate_class,
+        crop_class,
+        num_crop = 1, 
+        num_rotate = 1, 
+        num_color = 1,
+        images_directory = "images",
+        labels_directory = "labels",
+        cropped_images_directory = "cropped_images",
+        cropped_labels_directory = "cropped_labels",
+        rotated_images_directory = "rotated_images",
+        rotated_labels_directory = "rotated_labels",
+        colored_images_directory = "colored_images",
+    ):
+    
     # Create output directories if they don't exist
     os.makedirs(cropped_images_directory, exist_ok=True)
     os.makedirs(cropped_labels_directory, exist_ok=True)
@@ -64,19 +72,16 @@ if __name__ == "__main__":
         label_path = os.path.join(labels_directory, base_name + ".txt")
         
         try:
-            polygons, to_crop, to_rotate = extract_polygons(image_path, label_path)
-            
-            num_crop = 1
-            num_rotate = 1
-            num_color = 1
+            polygons, to_crop, to_rotate = extract_polygons(label_path, rotate_class, crop_class)
             
             
-            cropped_polygons,numberOfSuccesfullCrops = crop(image_path, to_crop, cropped_images_directory, num_crop)
+            
+            cropped_polygons, numberOfSuccesfullCrops = crop(image_path, to_crop, cropped_images_directory, num_crop)
             for i in range (0,numberOfSuccesfullCrops):
                 cropped_label_path = os.path.join(cropped_labels_directory, base_name +  "_cropped" + str(i) + ".txt")
                 save_label(cropped_polygons[i], cropped_label_path)
             
-            rotated_polygons,numberOfSuccesfullRotations = rotate(image_path, to_rotate, rotated_images_directory, num_rotate)
+            rotated_polygons, numberOfSuccesfullRotations = rotate(image_path, to_rotate, rotated_images_directory, num_rotate)
             for i in range (0,numberOfSuccesfullRotations):
                 rotated_label_path = os.path.join(rotated_labels_directory, base_name +  "_rotated" + str(i) + ".txt")
                 save_label(rotated_polygons[i], rotated_label_path)
