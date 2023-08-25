@@ -45,6 +45,10 @@ def save_label(updated_polygons, output_label_path):
 def apply_augmentation( 
         rotate_class,
         crop_class,
+        crop=False,
+        rotate=False,
+        color=False,
+        rotation_percentage=15,
         num_crop = 1, 
         num_rotate = 1, 
         num_color = 1,
@@ -72,21 +76,22 @@ def apply_augmentation(
         label_path = os.path.join(labels_directory, base_name + ".txt")
         
         try:
-            polygons, to_crop, to_rotate = extract_polygons(label_path, rotate_class, crop_class)
+            polygons,to_rotate , to_crop = extract_polygons(label_path,rotate_class= rotate_class,crop_class= crop_class)
             
             
+            if crop:    
+                cropped_polygons, numberOfSuccesfullCrops = crop(image_path, to_crop, cropped_images_directory, num_crop)
+                for i in range (0,numberOfSuccesfullCrops):
+                    cropped_label_path = os.path.join(cropped_labels_directory, base_name +  "_cropped" + str(i) + ".txt")
+                    save_label(cropped_polygons[i], cropped_label_path)
             
-            cropped_polygons, numberOfSuccesfullCrops = crop(image_path, to_crop, cropped_images_directory, num_crop)
-            for i in range (0,numberOfSuccesfullCrops):
-                cropped_label_path = os.path.join(cropped_labels_directory, base_name +  "_cropped" + str(i) + ".txt")
-                save_label(cropped_polygons[i], cropped_label_path)
-            
-            rotated_polygons, numberOfSuccesfullRotations = rotate(image_path, to_rotate, rotated_images_directory, num_rotate)
-            for i in range (0,numberOfSuccesfullRotations):
-                rotated_label_path = os.path.join(rotated_labels_directory, base_name +  "_rotated" + str(i) + ".txt")
-                save_label(rotated_polygons[i], rotated_label_path)
-
-            numberOfSuccesfullColors=color(image_path, colored_images_directory, num_color)
+            if rotate:    
+                rotated_polygons, numberOfSuccesfullRotations = rotation(image_path, to_rotate, rotated_images_directory, num_rotate,rotation_percentage)
+                for i in range (0,numberOfSuccesfullRotations):
+                    rotated_label_path = os.path.join(rotated_labels_directory, base_name +  "_rotated" + str(i) + ".txt")
+                    save_label(rotated_polygons[i], rotated_label_path)
+            if color:        
+                numberOfSuccesfullColors=color(image_path, colored_images_directory, num_color)
             
             
            
