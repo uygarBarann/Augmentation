@@ -1,3 +1,4 @@
+#from bahar_egemen_ismail_rotate import *
 import os
 
 def extract_polygons(label_path,rotate_class,crop_class):
@@ -43,8 +44,8 @@ def save_label(updated_polygons, output_label_path):
 
 
 def apply_augmentation( 
-        rotate_class,
-        crop_class,
+        rotate_class=[],
+        crop_class=[],
         crop=False,
         rotate=False,
         color=False,
@@ -100,3 +101,4 @@ def apply_augmentation(
             print(f"Label file missing for image: {image_path}")
         except Exception as e:
             print(f"An error occurred for image {image_path}: {e}")
+#apply_augmentation(rotate_class=[8],rotate=True)
