@@ -102,3 +102,29 @@ def apply_augmentation(
         except Exception as e:
             print(f"An error occurred for image {image_path}: {e}")
 #apply_augmentation(rotate_class=[8],rotate=True)
+
+#APPLY AUGMENTATION PARAMETERS:
+"""
+    rotate_class=[id1,id2,...] ids are integer vals
+        id's of the classes that rotation is conducted on
+
+    crop_class=[id1,id2,...]    ids are integer vals
+        id's of the classes that crop is conducted on
+    crop,rotate,color: boolean value
+        Flags for checking whether operations is conducted or not. Default false for all of them. If True, operation will be conducted.
+    rotation_percentage: int
+        minumum percentage of the polygons area after rotation
+    num_crop,num_rotate,num_color: int default values are 1.
+        values that determines how many of wach opeartion is conducted
+    images_directory = "images",labels_directory = "labels",
+    cropped_images_directory = "cropped_images",
+    cropped_labels_directory = "cropped_labels",
+    rotated_images_directory = "rotated_images",
+    rotated_labels_directory = "rotated_labels",
+    colored_images_directory = "colored_images",
+            directory paths and their default paths.
+
+
+
+
+"""
