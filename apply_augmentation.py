@@ -46,9 +46,9 @@ def save_label(updated_polygons, output_label_path):
 def apply_augmentation( 
         rotate_class=[],
         crop_class=[],
-        crop=False,
-        rotate=False,
-        color=False,
+        crop_flag=False,
+        rotate_flag=False,
+        color_flag=False,
         rotation_percentage=15,
         num_crop = 1, 
         num_rotate = 1, 
@@ -80,18 +80,18 @@ def apply_augmentation(
             polygons,to_rotate , to_crop = extract_polygons(label_path,rotate_class= rotate_class,crop_class= crop_class)
             
             
-            if crop:    
+            if crop_flag:    
                 cropped_polygons, numberOfSuccesfullCrops = crop(image_path, to_crop, cropped_images_directory, num_crop)
                 for i in range (0,numberOfSuccesfullCrops):
                     cropped_label_path = os.path.join(cropped_labels_directory, base_name +  "_cropped" + str(i) + ".txt")
                     save_label(cropped_polygons[i], cropped_label_path)
             
-            if rotate:    
+            if rotate_flag:    
                 rotated_polygons, numberOfSuccesfullRotations = rotation(image_path, to_rotate, rotated_images_directory, num_rotate,rotation_percentage)
                 for i in range (0,numberOfSuccesfullRotations):
                     rotated_label_path = os.path.join(rotated_labels_directory, base_name +  "_rotated" + str(i) + ".txt")
                     save_label(rotated_polygons[i], rotated_label_path)
-            if color:        
+            if color_flag:        
                 numberOfSuccesfullColors=color(image_path, colored_images_directory, num_color)
             
             
@@ -110,7 +110,7 @@ def apply_augmentation(
 
     crop_class=[id1,id2,...]    ids are integer vals
         id's of the classes that crop is conducted on
-    crop,rotate,color: boolean value
+    crop_flag,rotate_flag,color_flag: boolean value
         Flags for checking whether operations is conducted or not. Default false for all of them. If True, operation will be conducted.
     rotation_percentage: int
         minumum percentage of the polygons area after rotation
