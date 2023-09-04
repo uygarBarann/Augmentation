@@ -101,7 +101,7 @@ def apply_augmentation(
             print(f"Label file missing for image: {image_path}")
         except Exception as e:
             print(f"An error occurred for image {image_path}: {e}")
-#apply_augmentation(rotate_class=[8],rotate=True)
+#apply_augmentation(rotate_class=[8],rotate_flag=True)
 
 #APPLY AUGMENTATION PARAMETERS:
 """
@@ -115,7 +115,7 @@ def apply_augmentation(
     rotation_percentage: int
         minumum percentage of the polygons area after rotation
     num_crop,num_rotate,num_color: int default values are 1.
-        values that determines how many of wach opeartion is conducted
+        values that determines how many of which operation is conducted
     images_directory = "images",labels_directory = "labels",
     cropped_images_directory = "cropped_images",
     cropped_labels_directory = "cropped_labels",
