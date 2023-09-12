@@ -1,4 +1,6 @@
-#from bahar_egemen_ismail_rotate import *
+from rotate_main import *
+from colorize_main import *
+from crop import *
 import os
 
 def extract_polygons(label_path,rotate_class,crop_class):
@@ -101,8 +103,9 @@ def apply_augmentation(
             print(f"Label file missing for image: {image_path}")
         except Exception as e:
             print(f"An error occurred for image {image_path}: {e}")
-#apply_augmentation(rotate_class=[8],rotate_flag=True)
-
+            
+apply_augmentation(rotate_class=[8],rotate_flag=True,images_directory=r"D:\vs\augmentation\Augmentation-main\images",labels_directory=r"D:\vs\augmentation\Augmentation-main\labels")
+#apply_augmentation(crop_class=[8],crop_flag=True,images_directory=r"D:\vs\augmentation\Augmentation-main\images",labels_directory=r"D:\vs\augmentation\Augmentation-main\labels")
 #APPLY AUGMENTATION PARAMETERS:
 """
     rotate_class=[id1,id2,...] ids are integer vals
